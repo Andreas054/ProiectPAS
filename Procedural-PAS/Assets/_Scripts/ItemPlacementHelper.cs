@@ -12,6 +12,16 @@ public class ItemPlacementHelper : MonoBehaviour
     [SerializeField]
     public GameObject ItemsContainer;
 
+    [SerializeField]
+    public int EnemiesTotal = 40;
+    [SerializeField]
+    public GameObject EnemyPrefab;
+    [SerializeField]
+    public GameObject EnemiesContainer;
+
+    [SerializeField]
+    public GameObject player;
+
 
     Dictionary<PlacementType, HashSet<Vector2Int>>
         tileByType = new Dictionary<PlacementType, HashSet<Vector2Int>>();
@@ -74,6 +84,31 @@ public class ItemPlacementHelper : MonoBehaviour
             }
 
             itemPositions.Add(itemPosition);
+        }
+
+    }
+
+    public void PlaceEnemies()
+    {
+        List<Vector2?> enemiesPositions = new List<Vector2?>();
+
+        foreach (Transform child in EnemiesContainer.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        for (int i = 0; i < EnemiesTotal; i++)
+        {
+            Vector2? enemyPosition;
+            enemyPosition = GetItemPlacementPosition(PlacementType.OpenSpace, 25, Vector2Int.one, false);
+            if (enemyPosition != null)
+            {
+                GameObject newPrefabInstance = Instantiate(EnemyPrefab, enemyPosition.Value, Quaternion.identity);
+                newPrefabInstance.transform.SetParent(EnemiesContainer.transform);
+                newPrefabInstance.GetComponent<ChasePlayer>().player = player;
+            }
+
+            enemiesPositions.Add(enemyPosition);
         }
 
     }

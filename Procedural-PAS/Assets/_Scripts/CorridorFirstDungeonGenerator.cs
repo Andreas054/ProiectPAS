@@ -61,7 +61,7 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
         itemPlacementHelper.initialize(allRoomPositions, roomPositionsWithoutCorridors);
 
         itemPlacementHelper.PlaceItems();
-
+		itemPlacementHelper.PlaceEnemies();
 
         floorPositions.UnionWith(roomPositions);
 
