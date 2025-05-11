@@ -12,13 +12,35 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
 	[Range(0.1f, 1)]
 	private float roomPercent = 0.7f;
 
+	[SerializeField]
+	private ItemPlacementHelper itemPlacementHelper;
+
+	// Data
+	private Dictionary<Vector2Int, HashSet<Vector2Int>> roomsDictionary
+		= new Dictionary<Vector2Int, HashSet<Vector2Int>>();
+
+	private HashSet<Vector2Int> floorPositions, corridorPositions;
+
+
+	//Gizmos Data
+	private List<Color> roomColors = new List<Color>();
+	[SerializeField]
+	private bool showRoomGizmo = false, showCorridorsGizmo;
+
 	protected override void RunProceduralGeneration()
 	{
 		CorridorFirstGeneration();
 	}
 
-	private void CorridorFirstGeneration()
+    //public override void GenerateDungeon()
+    //{
+    //    base.GenerateDungeon();
+    //}
+
+    private void CorridorFirstGeneration()
 	{
+		Debug.Log("WTF");
+
 		HashSet<Vector2Int> floorPositions = new HashSet<Vector2Int>();
 		HashSet<Vector2Int> potentialRoomPositions = new HashSet<Vector2Int>();
 
@@ -26,20 +48,36 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
 
 		HashSet<Vector2Int> roomPositions = CreateRooms(potentialRoomPositions);
 
-		List<Vector2Int> deadEnds = FindAllDeadEnds(floorPositions);
+		HashSet<Vector2Int> allRoomPositions = new HashSet<Vector2Int>(roomPositions);
+
+        List<Vector2Int> deadEnds = FindAllDeadEnds(floorPositions);
 
 		CreateRoomsAtDeadEnd(deadEnds, roomPositions);
 
-		floorPositions.UnionWith(roomPositions);
+        HashSet<Vector2Int> roomPositionsWithoutCorridors = new HashSet<Vector2Int>(roomPositions);
+        roomPositionsWithoutCorridors.ExceptWith(corridorPositions);
 
-		for (int i = 0; i < corridors.Count; i++)
+        foreach (var position in roomPositionsWithoutCorridors)
+        {
+			continue;
+			// astea sunt pozitiile de camera in care vrem sa punem obiecte / inamici
+		}
+
+        itemPlacementHelper.initialize(allRoomPositions, roomPositionsWithoutCorridors);
+
+        itemPlacementHelper.PlaceItems();
+
+
+        floorPositions.UnionWith(roomPositions);
+
+        for (int i = 0; i < corridors.Count; i++)
 		{
 			corridors[i] = IncreaseCorridorSizeByOne(corridors[i]);
 			corridors[i] = IncreaseCorridorBrush3by3(corridors[i]);
 			floorPositions.UnionWith(corridors[i]);
 		}
 
-		tilemapVisualizer.PaintFloorTiles(floorPositions);
+        tilemapVisualizer.PaintFloorTiles(floorPositions);
 		WallGenerator.CreateWalls(floorPositions, tilemapVisualizer);
 	}
 
@@ -140,20 +178,39 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
 		return deadEnds;
 	}
 
+	private void ClearRoomData()
+	{
+		roomsDictionary.Clear();
+		roomColors.Clear();
+	}
+
+	private void SaveRoomData(Vector2Int roomPosition, HashSet<Vector2Int> roomFloor)
+	{
+		roomsDictionary[roomPosition] = roomFloor;
+		roomColors.Add(UnityEngine.Random.ColorHSV());
+	}
+
 	private HashSet<Vector2Int> CreateRooms(HashSet<Vector2Int> potentialRoomPositions)
 	{
 		HashSet<Vector2Int> roomPositions = new HashSet<Vector2Int>();
 		int roomToCreateCount = Mathf.RoundToInt(potentialRoomPositions.Count * roomPercent);
 
 		List<Vector2Int> roomsToCreate = potentialRoomPositions.OrderBy(x => Guid.NewGuid()).Take(roomToCreateCount).ToList();
+		ClearRoomData();
 
 		foreach (var roomPosition in roomsToCreate)
 		{
 			var roomFloor = RunRandomWalk(randomWalkParameters, roomPosition);
+
+			SaveRoomData(roomPosition, roomFloor);
 			roomPositions.UnionWith(roomFloor);
 		}
 
-		return roomPositions;
+        // Debug.Log(roomPositions.First());
+        // Debug.Log(roomPositions.GetType().Name);
+
+
+        return roomPositions;
 	}
 
 	private List<List<Vector2Int>> CreateCorridors(HashSet<Vector2Int> floorPositions, HashSet<Vector2Int> potentialRoomPositions)
@@ -170,6 +227,8 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
 			potentialRoomPositions.Add(currentPosition);
 			floorPositions.UnionWith(corridor);
 		}
+
+		corridorPositions = new HashSet<Vector2Int>(floorPositions);
 
 		return corridors;
 	}
