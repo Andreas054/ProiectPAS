@@ -11,8 +11,8 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
 	[SerializeField]
 	[Range(0.1f, 1)]
 	private float roomPercent = 0.7f;
-
-	[SerializeField]
+	[SerializeField] GameObject player;
+    [SerializeField]
 	private ItemPlacementHelper itemPlacementHelper;
 
 	// Data
@@ -32,23 +32,18 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
 		CorridorFirstGeneration();
 	}
 
-    //public override void GenerateDungeon()
-    //{
-    //    base.GenerateDungeon();
-    //}
-
     private void CorridorFirstGeneration()
 	{
-		Debug.Log("WTF");
-
 		HashSet<Vector2Int> floorPositions = new HashSet<Vector2Int>();
 		HashSet<Vector2Int> potentialRoomPositions = new HashSet<Vector2Int>();
 
 		List<List<Vector2Int>> corridors = CreateCorridors(floorPositions, potentialRoomPositions);
 
 		HashSet<Vector2Int> roomPositions = CreateRooms(potentialRoomPositions);
+		player.transform.position = new Vector3(roomPositions.First().x, roomPositions.First().y, 0);
 
-		HashSet<Vector2Int> allRoomPositions = new HashSet<Vector2Int>(roomPositions);
+
+        HashSet<Vector2Int> allRoomPositions = new HashSet<Vector2Int>(roomPositions);
 
         List<Vector2Int> deadEnds = FindAllDeadEnds(floorPositions);
 
