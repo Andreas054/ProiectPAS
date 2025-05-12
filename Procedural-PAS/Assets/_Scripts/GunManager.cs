@@ -8,13 +8,17 @@ public class GunManager : MonoBehaviour
     public GameObject bulletPrefab; 
     public float bulletSpeed = 1f;
 
+    public float fireRate = 0.2f;
+    private float nextFireTime = 0f;
+
     void Update()
     {
         AimAtCursor();
 
-        if (Input.GetMouseButtonDown(0)) 
+        if (Input.GetMouseButton(0) && Time.time >= nextFireTime)
         {
             Shoot();
+            nextFireTime = Time.time + fireRate;
         }
     }
 

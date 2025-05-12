@@ -88,7 +88,7 @@ public class ItemPlacementHelper : MonoBehaviour
 
     }
 
-    public void PlaceEnemies()
+    public void PlaceEnemies(HashSet<Vector2Int> firstRoomPositions)
     {
         List<Vector2?> enemiesPositions = new List<Vector2?>();
 
@@ -103,6 +103,12 @@ public class ItemPlacementHelper : MonoBehaviour
             enemyPosition = GetItemPlacementPosition(PlacementType.OpenSpace, 25, Vector2Int.one, false);
             if (enemyPosition != null)
             {
+                Vector2 myVector2 = enemyPosition.Value;
+                Vector2Int myVector2Int = new Vector2Int(Mathf.FloorToInt(myVector2.x), Mathf.FloorToInt(myVector2.y));
+
+                if (firstRoomPositions.Contains(myVector2Int))
+                    continue;
+
                 GameObject newPrefabInstance = Instantiate(EnemyPrefab, enemyPosition.Value, Quaternion.identity);
                 newPrefabInstance.transform.SetParent(EnemiesContainer.transform);
                 newPrefabInstance.GetComponent<ChasePlayer>().player = player;

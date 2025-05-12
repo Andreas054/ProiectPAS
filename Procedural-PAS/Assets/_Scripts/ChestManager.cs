@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class ChestManager : MonoBehaviour
@@ -23,6 +24,11 @@ public class ChestManager : MonoBehaviour
         if (health <= 0)
         {
             Destroy(gameObject);
+            GameObject CoinQuantity = GameObject.Find("CoinQuantity");
+
+            int currency = int.Parse(CoinQuantity.GetComponent<TextMeshProUGUI>().text);
+            currency += 5 * chestType;
+            CoinQuantity.GetComponent<TextMeshProUGUI>().text = currency.ToString();
         }
     }
 }
