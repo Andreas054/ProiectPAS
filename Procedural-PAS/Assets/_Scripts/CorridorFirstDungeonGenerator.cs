@@ -19,7 +19,7 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
 	private Dictionary<Vector2Int, HashSet<Vector2Int>> roomsDictionary
 		= new Dictionary<Vector2Int, HashSet<Vector2Int>>();
 
-	private HashSet<Vector2Int> floorPositions, corridorPositions;
+	private HashSet<Vector2Int> floorPositions, corridorPositions, firstRoomFloor;
 
 
 	//Gizmos Data
@@ -61,7 +61,7 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
         itemPlacementHelper.initialize(allRoomPositions, roomPositionsWithoutCorridors);
 
         itemPlacementHelper.PlaceItems();
-		itemPlacementHelper.PlaceEnemies();
+		itemPlacementHelper.PlaceEnemies(firstRoomFloor);
 
         floorPositions.UnionWith(roomPositions);
 
@@ -193,9 +193,16 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
 		List<Vector2Int> roomsToCreate = potentialRoomPositions.OrderBy(x => Guid.NewGuid()).Take(roomToCreateCount).ToList();
 		ClearRoomData();
 
+		bool first_room = false;
+
 		foreach (var roomPosition in roomsToCreate)
 		{
 			var roomFloor = RunRandomWalk(randomWalkParameters, roomPosition);
+			if (first_room == false)
+			{
+				firstRoomFloor = roomFloor;
+                first_room = true;
+			}
 
 			SaveRoomData(roomPosition, roomFloor);
 			roomPositions.UnionWith(roomFloor);
