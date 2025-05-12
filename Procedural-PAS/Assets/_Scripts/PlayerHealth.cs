@@ -47,4 +47,9 @@ public class PlayerHealth : MonoBehaviour
             health = 5;
         }
     }
+
+    public void ResetHealth()
+    {
+        health = 5;
+    }
 }

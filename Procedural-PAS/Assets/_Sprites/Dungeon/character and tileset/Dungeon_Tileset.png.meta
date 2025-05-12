@@ -2137,48 +2137,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: big_chest
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 64
-        width: 32
-        height: 16
-      alignment: 6
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3646642572d317590800000000000000
-      internalID: -4695309399070934062
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Dungeon_Tileset_67
-      rect:
-        serializedVersion: 2
-        x: 112
-        y: 64
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 855c905c225db17b0800000000000000
-      internalID: -4765653632507054551
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Dungeon_Tileset_68
       rect:
         serializedVersion: 2
@@ -2312,8 +2270,8 @@ TextureImporter:
         y: 48
         width: 16
         height: 16
-      alignment: 6
-      pivot: {x: 0, y: 0}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2510,27 +2468,6 @@ TextureImporter:
       bones: []
       spriteID: 7dadc30b00a34ed80800000000000000
       internalID: -1034604436700536505
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: chest
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 32
-        width: 16
-        height: 16
-      alignment: 6
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e15af8177eda30d20800000000000000
-      internalID: -589316354031001511
       vertices: []
       indices: 
       edges: []
@@ -2913,6 +2850,69 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Dungeon_Tileset_66
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3eba6b7c2763eb649bd269b027d8208c
+      internalID: 992906330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _door
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 64
+        width: 16
+        height: 16
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c5d15e01e4e555c4aa3fec55fe6ed7ee
+      internalID: 931001471
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _chest1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 32
+        width: 16
+        height: 16
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ae6b49b66dc4d3143ab8b0c286c0f405
+      internalID: -877452877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -2990,7 +2990,7 @@ TextureImporter:
       Dungeon_Tileset_63: 356223449659879753
       Dungeon_Tileset_64: 1053006213846151300
       Dungeon_Tileset_65: 8741352430255876377
-      Dungeon_Tileset_67: -4765653632507054551
+      Dungeon_Tileset_66: 992906330
       Dungeon_Tileset_68: 8042273296376651466
       Dungeon_Tileset_69: 5945357789820212794
       Dungeon_Tileset_7: 8938356945095094423
@@ -3025,8 +3025,8 @@ TextureImporter:
       Dungeon_Tileset_97: -6821306102546672784
       Dungeon_Tileset_98: -8258698053525156362
       Dungeon_Tileset_99: -2978260595890351725
-      big_chest: -4695309399070934062
-      chest: -589316354031001511
+      _chest1: -877452877
+      _door: 931001471
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

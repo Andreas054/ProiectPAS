@@ -21,6 +21,11 @@ public class ItemPlacementHelper : MonoBehaviour
 
     [SerializeField]
     public GameObject player;
+    private GameObject chestWithKey;
+    private int nrOfItems;
+
+    [SerializeField]
+    public GameObject key;
 
 
     Dictionary<PlacementType, HashSet<Vector2Int>>
@@ -49,11 +54,14 @@ public class ItemPlacementHelper : MonoBehaviour
             tileByType[type].Add(position);
         }
 
+        //PlaceExitDoor(tileByType[PlacementType.NearWall]);
+
     }
 
     public void PlaceItems()
     {
         List<Vector2?> itemPositions = new List<Vector2?>();
+        nrOfItems = 0;
 
         foreach (Transform child in ItemsContainer.transform)
         {
@@ -63,13 +71,13 @@ public class ItemPlacementHelper : MonoBehaviour
         for (int i = 0; i < ItemsTotal; i++)
         {
             Vector2? itemPosition;
-
+            GameObject newPrefabInstance = null;
             if (i % 2 == 0)
             {
                 itemPosition = GetItemPlacementPosition(PlacementType.NearWall, 25, ItemPrefab.GetComponent<Item>().size, false);
                 if (itemPosition != null)
                 {
-                    GameObject newPrefabInstance = Instantiate(ItemPrefab, itemPosition.Value, Quaternion.identity);
+                    newPrefabInstance = Instantiate(ItemPrefab, itemPosition.Value, Quaternion.identity);
                     newPrefabInstance.transform.SetParent(ItemsContainer.transform);
                 }
             }
@@ -78,13 +86,29 @@ public class ItemPlacementHelper : MonoBehaviour
                 itemPosition = GetItemPlacementPosition(PlacementType.NearWall, 25, ItemPrefab2.GetComponent<Item>().size, false);
                 if (itemPosition != null)
                 {
-                    GameObject newPrefabInstance = Instantiate(ItemPrefab2, itemPosition.Value, Quaternion.identity);
+                    newPrefabInstance = Instantiate(ItemPrefab2, itemPosition.Value, Quaternion.identity);
                     newPrefabInstance.transform.SetParent(ItemsContainer.transform);
                 }
             }
 
-            itemPositions.Add(itemPosition);
+            if(newPrefabInstance != null)
+            {
+                nrOfItems++;
+                itemPositions.Add(itemPosition);
+            }
         }
+
+        int randomChestId = Random.Range(0, nrOfItems);
+        //Debug.Log($"{randomChestId}");
+
+        ItemsContainer.transform.GetChild(randomChestId).GetComponent<ChestManager>().SetKey();
+        if (itemPositions[randomChestId].HasValue)
+        {
+            Vector2 pos = itemPositions[randomChestId].Value;
+            key.transform.position = new Vector3(pos.x, pos.y, 0);
+        }
+        //Debug.Log(key.transform.position);
+        //Debug.Log(ItemsContainer.transform.GetChild(randomChestId).transform.position);
 
     }
 

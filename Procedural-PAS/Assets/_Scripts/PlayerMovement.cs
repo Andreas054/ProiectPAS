@@ -48,11 +48,23 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    //private void FixedUpdate()
+    //{
+    //    if (movement.x != 0 || movement.y != 0)
+    //    {
+    //        rb.velocity = movement * speed;
+    //    }
+    //}
+
     private void FixedUpdate()
     {
         if (movement.x != 0 || movement.y != 0)
         {
             rb.velocity = movement * speed;
+        }
+        else
+        {
+            rb.velocity = Vector2.zero;
         }
     }
 
