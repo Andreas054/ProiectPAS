@@ -1,8 +1,10 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
+using UnityEngine.WSA;
 
 public class CorridorFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
 {
@@ -14,9 +16,14 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
 	[SerializeField] GameObject player;
     [SerializeField]
 	private ItemPlacementHelper itemPlacementHelper;
+    private List<TileBase> possibleDoorList;
+	[SerializeField]
+	public GameObject door;
+	[SerializeField]
+	public GameObject canvas;
 
-	// Data
-	private Dictionary<Vector2Int, HashSet<Vector2Int>> roomsDictionary
+    // Data
+    private Dictionary<Vector2Int, HashSet<Vector2Int>> roomsDictionary
 		= new Dictionary<Vector2Int, HashSet<Vector2Int>>();
 
 	private HashSet<Vector2Int> floorPositions, corridorPositions, firstRoomFloor;
@@ -34,7 +41,9 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
 
     private void CorridorFirstGeneration()
 	{
-		HashSet<Vector2Int> floorPositions = new HashSet<Vector2Int>();
+        canvas.SetActive(false);
+
+        HashSet<Vector2Int> floorPositions = new HashSet<Vector2Int>();
 		HashSet<Vector2Int> potentialRoomPositions = new HashSet<Vector2Int>();
 
 		List<List<Vector2Int>> corridors = CreateCorridors(floorPositions, potentialRoomPositions);
@@ -73,7 +82,15 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
 		}
 
         tilemapVisualizer.PaintFloorTiles(floorPositions);
-		WallGenerator.CreateWalls(floorPositions, tilemapVisualizer);
+        List<WallTileData> possibleDoorList = new List<WallTileData>();
+
+        WallGenerator.CreateWalls(floorPositions, tilemapVisualizer, possibleDoorList);
+
+		int idx = UnityEngine.Random.Range(0, possibleDoorList.Count);
+        WallTileData doorTileData = possibleDoorList[idx];
+        tilemapVisualizer.PaintSingleTile(doorTileData.wallTilemap, doorTileData.tile, doorTileData.position);
+		door.transform.position = new Vector3Int(doorTileData.position.x, doorTileData.position.y, 0);
+
 	}
 
 	private List<Vector2Int> IncreaseCorridorBrush3by3(List<Vector2Int> corridor)

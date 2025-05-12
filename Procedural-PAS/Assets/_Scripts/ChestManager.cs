@@ -7,6 +7,7 @@ public class ChestManager : MonoBehaviour
 {
     [SerializeField] public int chestType; // 1 2
     public float health; // 1 2
+    public bool hasKey = false;
 
     void Start()
     {
@@ -30,5 +31,10 @@ public class ChestManager : MonoBehaviour
             currency += 5 * chestType;
             CoinQuantity.GetComponent<TextMeshProUGUI>().text = currency.ToString();
         }
+    }
+
+    public void SetKey() 
+    { 
+        this.hasKey = true;
     }
 }

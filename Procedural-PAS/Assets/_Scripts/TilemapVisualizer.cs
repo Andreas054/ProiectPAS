@@ -4,6 +4,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+public class WallTileData
+{
+    public Tilemap wallTilemap;
+    public TileBase tile;
+    public Vector2Int position;
+
+    public WallTileData(Tilemap wallTilemap, TileBase tile, Vector2Int position)
+    {
+        this.wallTilemap = wallTilemap;
+        this.tile = tile;
+        this.position = position;
+    }
+}
+
 public class TilemapVisualizer : MonoBehaviour
 {
     [SerializeField]
@@ -15,9 +29,10 @@ public class TilemapVisualizer : MonoBehaviour
     private Tilemap wallTilemap;
     [SerializeField]
     private TileBase wallTop;
+    //private List<TileBase> possibleDoorList;
 
     [SerializeField]
-    private TileBase wallSideRight, wallSideLeft, wallBottom, wallFull;
+    private TileBase wallSideRight, wallSideLeft, wallBottom, wallFull, door;
 
     public void PaintFloorTiles(IEnumerable<Vector2Int> floorPositions)
     {
@@ -32,19 +47,20 @@ public class TilemapVisualizer : MonoBehaviour
         }
     }
 
-    private void PaintSingleTile(Tilemap tilemap, TileBase tile, Vector2Int position)
+    public void PaintSingleTile(Tilemap tilemap, TileBase tile, Vector2Int position)
     {
         var tilePosition = tilemap.WorldToCell((Vector3Int)position);
         tilemap.SetTile(tilePosition, tile);
     }
 
-    internal void PaintSingleBasicWall(Vector2Int position, string binaryType)
+    internal void PaintSingleBasicWall(Vector2Int position, string binaryType, List<WallTileData> possibleDoorList)
     {
         int typeAsInt = Convert.ToInt32(binaryType, 2);
         TileBase tile = null;
         if (WallByteTypes.wallTop.Contains(typeAsInt))
         { 
             tile = wallTop;
+            possibleDoorList.Add(new WallTileData(wallTilemap, door, position));
         }
         else if (WallByteTypes.wallSideRight.Contains(typeAsInt))
         {

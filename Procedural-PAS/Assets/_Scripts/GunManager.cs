@@ -6,6 +6,8 @@ public class GunManager : MonoBehaviour
 {
     public Transform firePoint; 
     public GameObject bulletPrefab; 
+    [SerializeField]
+    public GameObject BulletContainer;
     public float bulletSpeed = 1f;
 
     public float fireRate = 0.2f;
@@ -33,6 +35,7 @@ public class GunManager : MonoBehaviour
     void Shoot()
     {
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        //bullet.transform.SetParent(BulletContainer.transform);
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
 
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
