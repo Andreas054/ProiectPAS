@@ -29,7 +29,7 @@ public static class WallGenerator
                     neighboursBinaryType += "0";
                 }
             }
-            //tilemapVisualizer.PaintSingleCornerWall(position, neighboursBinaryType);
+            tilemapVisualizer.PaintSingleCornerWall(position, neighboursBinaryType);
         }
     }
 
